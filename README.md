@@ -16,8 +16,5 @@ I've not tested this with other web servers like Apache or HAProxy, because I us
 
 ## Todo
 
-* Ability to manage users
-    * Users should be able to change their password
-    * Admins should be able to invite new users
 * Create a WordPress plugin
 * Documentation
