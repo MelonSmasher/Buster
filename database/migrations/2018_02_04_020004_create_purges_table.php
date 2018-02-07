@@ -15,6 +15,7 @@ class CreatePurgesTable extends Migration
     {
         Schema::create('purges', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('scheme_id')->nullable();
             $table->unsignedInteger('server_id')->nullable();
             $table->unsignedInteger('proxy_id')->nullable();
             $table->string('url');
@@ -24,6 +25,7 @@ class CreatePurgesTable extends Migration
             $table->json('action');
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('scheme_id')->references('id')->on('schemes')->onDelete('cascade');
             $table->foreign('server_id')->references('id')->on('servers')->onDelete('cascade');
             $table->foreign('proxy_id')->references('id')->on('proxies')->onDelete('cascade');
         });
@@ -37,6 +39,7 @@ class CreatePurgesTable extends Migration
     public function down()
     {
         Schema::table('purges', function (Blueprint $table) {
+            $table->dropForeign('purges_scheme_id_foreign');
             $table->dropForeign('purges_server_id_foreign');
             $table->dropForeign('purges_proxy_id_foreign');
         });

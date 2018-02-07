@@ -15,5 +15,6 @@ use Illuminate\Http\Request;
 
 Route::group(['middleware' => ['auth.apikey']], function () {
     Route::post('/bust', 'HomeController@bust')->name('api.bust');
+    Route::get('/history/{id}', 'HomeController@history')->name('api.history');
 });
 

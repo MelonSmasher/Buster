@@ -60,6 +60,7 @@
 
                             <ul class="dropdown-menu">
                                 <li><a href="{{ route('profile') }}">Profile</a></li>
+                                <li><a href="{{ route('users') }}">Users</a></li>
                                 <li>
                                     <a href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -85,5 +86,6 @@
 
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}"></script>
+@yield('template_scripts')
 </body>
 </html>

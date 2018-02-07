@@ -15,6 +15,7 @@ class Purge extends Model
      * @var array
      */
     protected $fillable = [
+        'scheme_id',
         'server_id',
         'proxy_id',
         'url',

@@ -27,7 +27,6 @@ Route::get('/password/reset/{token}', 'Auth\ResetPasswordController@showResetFor
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/profile', 'HomeController@profile')->name('profile');
-    Route::get('/users', 'HomeController@users')->name('users');
     Route::get('/servers', 'HomeController@servers')->name('servers');
     Route::get('/proxies', 'HomeController@proxies')->name('proxies');
     Route::get('/uris', 'HomeController@uris')->name('uris');

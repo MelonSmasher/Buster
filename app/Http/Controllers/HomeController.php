@@ -7,6 +7,7 @@ use App\Models\Purge;
 use App\Models\Scheme;
 use App\Models\Server;
 use App\Models\Uri;
+use App\User;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 
@@ -14,7 +15,7 @@ use GuzzleHttp\Client;
  * Class HomeController
  * @package App\Http\Controllers
  * @todo Use Laravel validation for all input
- * @todo Create user management
+ * @todo Add user rolls
  */
 class HomeController extends Controller
 {
@@ -148,6 +149,7 @@ class HomeController extends Controller
 
 
             Purge::create([
+                'scheme_id' => $scheme->id,
                 'server_id' => $scheme->server->id,
                 'url' => $action->masquerade,
                 'path' => $path,
@@ -167,11 +169,13 @@ class HomeController extends Controller
     }
 
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @param Request $request
+     * @param $id
+     * @return string
      */
-    public function users()
+    public function history(Request $request, $id)
     {
-        return view('users');
+        return json_encode(Purge::where('scheme_id', $id)->orderBy('created_at', 'desc')->paginate(15));
     }
 
     /**
