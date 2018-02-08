@@ -16,7 +16,6 @@ I've not tested this with other web servers like Apache or HAProxy, because I us
 
 ## Todo
 
-* Create a WordPress plugin
 * Documentation
 
 ## Related Projects
