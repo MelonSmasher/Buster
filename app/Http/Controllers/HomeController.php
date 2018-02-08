@@ -7,7 +7,6 @@ use App\Models\Purge;
 use App\Models\Scheme;
 use App\Models\Server;
 use App\Models\Uri;
-use App\User;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 
