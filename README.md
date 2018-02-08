@@ -18,3 +18,14 @@ I've not tested this with other web servers like Apache or HAProxy, because I us
 
 * Create a WordPress plugin
 * Documentation
+
+## Related Projects
+
+Some cool projects that this software relies on.
+
+* [Laravel](https://laravel.com/)
+* [guzzle/guzzle](https://github.com/guzzle/guzzle)
+* [chrisbjr/api-guard](https://github.com/chrisbjr/api-guard)
+* [jeremykenedy/laravel-users](https://github.com/jeremykenedy/laravel-users)
+* [MelonSmasher/Buster-Client](https://github.com/MelonSmasher/Buster-Client)
+* [MelonSmasher/Buster](https://github.com/MelonSmasher/Buster)
