@@ -24,6 +24,7 @@ I've not tested this with other web servers like Apache or HAProxy, because I us
 Some cool projects that this software relies on.
 
 * [Laravel](https://laravel.com/)
+* [nginx-modules/ngx_cache_purge](https://github.com/nginx-modules/ngx_cache_purge)
 * [guzzle/guzzle](https://github.com/guzzle/guzzle)
 * [chrisbjr/api-guard](https://github.com/chrisbjr/api-guard)
 * [jeremykenedy/laravel-users](https://github.com/jeremykenedy/laravel-users)
