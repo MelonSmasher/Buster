@@ -28,4 +28,4 @@ Some cool projects that this software relies on.
 * [chrisbjr/api-guard](https://github.com/chrisbjr/api-guard)
 * [jeremykenedy/laravel-users](https://github.com/jeremykenedy/laravel-users)
 * [MelonSmasher/Buster-Client](https://github.com/MelonSmasher/Buster-Client)
-* [MelonSmasher/Buster](https://github.com/MelonSmasher/Buster)
+* [MelonSmasher/Buster-WP](https://github.com/MelonSmasher/Buster-WP)
