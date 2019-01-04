@@ -19,7 +19,6 @@ class BustPath implements ShouldQueue
     protected $http_scheme;
     protected $path;
     protected $method;
-    protected $scheme;
     protected $action;
     protected $resolvePrefix;
 
@@ -29,17 +28,15 @@ class BustPath implements ShouldQueue
      * @param string $http_scheme
      * @param string $path
      * @param string $method
-     * @param Scheme $scheme
      * @param array $resolvePrefix
      * @param $action
      */
-    public function __construct(array $data, string $http_scheme, string $path, string $method, Scheme $scheme, array $resolvePrefix, $action)
+    public function __construct($data, $http_scheme, $path, $method, $resolvePrefix, $action)
     {
         $this->data = $data;
         $this->http_scheme = $http_scheme;
         $this->path = $path;
         $this->method = $method;
-        $this->scheme = $scheme;
         $this->resolvePrefix = $resolvePrefix;
         $this->action = $action;
     }
@@ -53,8 +50,9 @@ class BustPath implements ShouldQueue
     public function handle()
     {
         $client = new Client();
+        $scheme = Scheme::findOrFail($this->data['scheme_id'])->formScheme();
 
-        $this->action->buster_key = $this->http_scheme . $this->method . $this->scheme->server->hostname . $this->path;
+        $this->action->buster_key = $this->http_scheme . $this->method . $scheme->server->hostname . $this->path;
         $resolveParam = $this->resolvePrefix;
         $resolveParam[] = $this->action->masquerade;
         $response = $client->request(

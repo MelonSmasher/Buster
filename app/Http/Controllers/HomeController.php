@@ -113,7 +113,7 @@ class HomeController extends Controller
         }
 
         foreach ($scheme->server_urls as $action) {
-            BustPath::dispatch($data, $http_scheme, $path, $method, $scheme, $resolvePrefix, $action);
+            BustPath::dispatch($data, $http_scheme, $path, $method, $resolvePrefix, $action);
         }
 
         if ($request->path() === 'bust') {
