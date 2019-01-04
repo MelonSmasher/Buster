@@ -51,6 +51,7 @@ class BustPath implements ShouldQueue
     {
         $client = new Client();
         $scheme = Scheme::findOrFail($this->data['scheme_id'])->formScheme();
+        $scheme->server_urls = $scheme->formUrls();
 
         $this->action->buster_key = $this->http_scheme . $this->method . $scheme->server->hostname . $this->path;
         $resolveParam = $this->resolvePrefix;
@@ -64,7 +65,7 @@ class BustPath implements ShouldQueue
                 'http_errors' => false,
                 'headers' =>
                     [
-                        'Host' => $this->scheme->server->hostname,
+                        'Host' => $scheme->server->hostname,
                         'x-buster-mode' => 'live',
                         'x-buster-key' => $this->action->buster_key
                     ],
@@ -82,8 +83,8 @@ class BustPath implements ShouldQueue
         $this->action->response->reason = $response->getReasonPhrase();
 
         Purge::create([
-            'scheme_id' => $this->scheme->id,
-            'server_id' => $this->scheme->server->id,
+            'scheme_id' => $scheme->id,
+            'server_id' => $scheme->server->id,
             'url' => $this->action->masquerade,
             'path' => $this->path,
             'response_code' => $response->getStatusCode(),
