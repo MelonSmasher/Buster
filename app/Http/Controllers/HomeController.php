@@ -99,7 +99,23 @@ class HomeController extends Controller
     public function bust(Request $request)
     {
         $data = $request->only(['path', 'method', 'scheme_id']);
-        BustPath::dispatch($data);
+
+        $scheme = Scheme::findOrFail($data['scheme_id'])->formScheme();
+        $scheme->server_urls = $scheme->formUrls();
+
+        $http_scheme = ($scheme->server->use_https) ? 'https' : 'http';
+        $path = $data['path'];
+        $method = (empty($data['method'])) ? 'GET' : $data['method'];
+        $resolvePrefix = [];
+
+        foreach ($scheme->server_urls as $action) {
+            $resolvePrefix[] = '-' . $action->masquerade;
+        }
+
+        foreach ($scheme->server_urls as $action) {
+            BustPath::dispatch($data, $http_scheme, $path, $method, $scheme, $resolvePrefix, $action);
+        }
+
         if ($request->path() === 'bust') {
             return redirect(route('home'));
         } else {

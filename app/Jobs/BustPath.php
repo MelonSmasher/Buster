@@ -15,16 +15,33 @@ class BustPath implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $PurgeData;
+    protected $data;
+    protected $http_scheme;
+    protected $path;
+    protected $method;
+    protected $scheme;
+    protected $action;
+    protected $resolvePrefix;
 
     /**
-     * Create a new job instance.
-     *
-     * @return void
+     * BustPath constructor.
+     * @param array $data
+     * @param string $http_scheme
+     * @param string $path
+     * @param string $method
+     * @param Scheme $scheme
+     * @param array $resolvePrefix
+     * @param $action
      */
-    public function __construct(array $PurgeData)
+    public function __construct(array $data, string $http_scheme, string $path, string $method, Scheme $scheme, array $resolvePrefix, $action)
     {
-        $this->PurgeData = $PurgeData;
+        $this->data = $data;
+        $this->http_scheme = $http_scheme;
+        $this->path = $path;
+        $this->method = $method;
+        $this->scheme = $scheme;
+        $this->resolvePrefix = $resolvePrefix;
+        $this->action = $action;
     }
 
     /**
@@ -35,69 +52,48 @@ class BustPath implements ShouldQueue
      */
     public function handle()
     {
+        $client = new Client();
 
-        $data = $this->PurgeData;
-
-        $scheme = Scheme::findOrFail($data['scheme_id'])->formScheme();
-        $scheme->server_urls = $scheme->formUrls();
-
-        $http_scheme = ($scheme->server->use_https) ? 'https' : 'http';
-        $path = $data['path'];
-        $method = (empty($data['method'])) ? 'GET' : $data['method'];
-
-        $result = (object)[];
-        $result->input_data = $data;
-        $result->buster_scheme = $scheme;
-        $result->actions = [];
-        $resolvePrefix = [];
-
-        foreach ($scheme->server_urls as $action) {
-            $resolvePrefix[] = '-' . $action->masquerade;
-        }
-
-        foreach ($scheme->server_urls as $action) {
-            $client = new Client();
-            $action->buster_key = $http_scheme . $method . $scheme->server->hostname . $path;
-            $resolveParam = $resolvePrefix;
-            $resolveParam[] = $action->masquerade;
-            $response = $client->request(
-                $method,
-                $action->url . $path,
-                [
-                    'connect_timeout' => 10.00,
-                    'debug' => false,
-                    'http_errors' => false,
-                    'headers' =>
-                        [
-                            'Host' => $scheme->server->hostname,
-                            'x-buster-mode' => 'live',
-                            'x-buster-key' => $action->buster_key
-                        ],
-                    'curl' => [
-                        CURLOPT_DNS_CACHE_TIMEOUT => 0,
-                        CURLOPT_RESOLVE => $resolveParam
-                    ]
+        $this->action->buster_key = $this->http_scheme . $this->method . $this->scheme->server->hostname . $this->path;
+        $resolveParam = $this->resolvePrefix;
+        $resolveParam[] = $this->action->masquerade;
+        $response = $client->request(
+            $this->method,
+            $this->action->url . $this->path,
+            [
+                'connect_timeout' => 58.00,
+                'debug' => false,
+                'http_errors' => false,
+                'headers' =>
+                    [
+                        'Host' => $this->scheme->server->hostname,
+                        'x-buster-mode' => 'live',
+                        'x-buster-key' => $this->action->buster_key
+                    ],
+                'curl' => [
+                    CURLOPT_DNS_CACHE_TIMEOUT => 0,
+                    CURLOPT_RESOLVE => $resolveParam
                 ]
-            );
-            $action->response = (object)[];
-            $action->response->code = $response->getStatusCode();
-            $action->response->headers = $response->getHeaders();
-            $action->response->body = $response->getBody();
-            $action->response->reason = $response->getReasonPhrase();
-            $result->actions[] = $action;
+            ]
+        );
 
+        $this->action->response = (object)[];
+        $this->action->response->code = $response->getStatusCode();
+        $this->action->response->headers = $response->getHeaders();
+        $this->action->response->body = $response->getBody();
+        $this->action->response->reason = $response->getReasonPhrase();
 
-            Purge::create([
-                'scheme_id' => $scheme->id,
-                'server_id' => $scheme->server->id,
-                'url' => $action->masquerade,
-                'path' => $path,
-                'response_code' => $response->getStatusCode(),
-                'reason' => $action->response->reason,
-                'action' => json_encode($action)
-            ]);
+        Purge::create([
+            'scheme_id' => $this->scheme->id,
+            'server_id' => $this->scheme->server->id,
+            'url' => $this->action->masquerade,
+            'path' => $this->path,
+            'response_code' => $response->getStatusCode(),
+            'reason' => $this->action->response->reason,
+            'action' => json_encode($this->action)
+        ]);
 
-            unset($client);
-        }
+        unset($client);
     }
+
 }
