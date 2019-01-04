@@ -125,6 +125,7 @@ class HomeController extends Controller
                 $method,
                 $action->url . $path,
                 [
+                    'connect_timeout' => 10.00,
                     'debug' => false,
                     'http_errors' => false,
                     'headers' =>
