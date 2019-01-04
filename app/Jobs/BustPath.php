@@ -60,7 +60,7 @@ class BustPath implements ShouldQueue
             $this->method,
             $this->action->url . $this->path,
             [
-                'connect_timeout' => 58.00,
+                'connect_timeout' => 10.00,
                 'debug' => false,
                 'http_errors' => false,
                 'headers' =>
