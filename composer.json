@@ -18,11 +18,11 @@
     "require": {
         "php": "~7.1.0",
         "chrisbjr/api-guard": "4.*",
-        "fideloper/proxy": "~3.3",
+        "fideloper/proxy": "^4.0",
         "genealabs/laravel-model-caching": "^0.3.6",
         "guzzlehttp/guzzle": "^6.3",
-        "jeremykenedy/laravel-users": "^1.5",
-        "laravel/framework": "5.5.*",
+        "jeremykenedy/laravel-users": "^3.1",
+        "laravel/framework": "5.6.*",
         "laravel/tinker": "~1.0",
         "predis/predis": "^1.1"
     },
