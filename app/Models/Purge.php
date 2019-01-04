@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 
 class Purge extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Cachable;
 
     /**
      * The attributes that are mass assignable.

@@ -19,6 +19,7 @@
         "php": "~7.1.0",
         "chrisbjr/api-guard": "4.*",
         "fideloper/proxy": "~3.3",
+        "genealabs/laravel-model-caching": "^0.3.6",
         "guzzlehttp/guzzle": "^6.3",
         "jeremykenedy/laravel-users": "^1.5",
         "laravel/framework": "5.5.*",
@@ -69,5 +70,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
